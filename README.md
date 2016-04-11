@@ -28,3 +28,6 @@ typings install angularfire2 --save --ambient ( nothing was available at the tim
 
 typings install firebase --save --ambient
 ```
+###Non AngularFire Example
+Here is a link to a similar application using the Firebase REST APIs
+[https://github.com/aaronksaunders/ionic2-firebase-sample](https://github.com/aaronksaunders/ionic2-firebase-sample)
