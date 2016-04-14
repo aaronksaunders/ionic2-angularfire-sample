@@ -4,6 +4,7 @@ import {StatusBar} from 'ionic-native';
 import {HomePage} from './pages/home/home';
 
 
+
 import {
     FIREBASE_PROVIDERS, defaultFirebase,
     AngularFire, firebaseAuthConfig, AuthProviders,

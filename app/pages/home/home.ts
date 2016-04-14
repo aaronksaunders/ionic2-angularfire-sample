@@ -1,7 +1,8 @@
-import {Page} from 'ionic-angular';
-import {Component} from 'angular2/core';
+import {Modal, NavController,Page} from 'ionic-angular';
+import {Component, OnInit} from 'angular2/core';
 import {AngularFire} from 'angularfire2';
 import {Observable} from 'rxjs/Observable';
+import {ModalPage} from '../login/login'
 
 import {FirebaseAuth, AuthProviders, AuthMethods } from 'angularfire2';
 
@@ -12,7 +13,7 @@ import {FirebaseAuth, AuthProviders, AuthMethods } from 'angularfire2';
                 Home
             </ion-title>
             <ion-buttons end>
-                <button (click)="loginClicked()">
+                <button (click)="logoutClicked()">
                 <ion-icon name="contact"></ion-icon>
                 </button>
             </ion-buttons>            
@@ -33,44 +34,38 @@ import {FirebaseAuth, AuthProviders, AuthMethods } from 'angularfire2';
             </ion-card>
         </ion-content>`
 })
-export class HomePage {
+export class HomePage implements OnInit {
     bookItems: Observable<any[]>;
     authInfo: any
 
-    constructor(public af: AngularFire, public auth: FirebaseAuth) {
-        this.bookItems = af.list('/bookItems');
+    constructor(public af: AngularFire, public auth: FirebaseAuth, public navCtrl: NavController) {
 
-        auth.subscribe((data) => {
+    }
+    
+    ngOnInit() {
+          this.auth.subscribe((data) => {
             console.log("in auth subscribe", data)
             if (data) {
                 this.authInfo = data.password
+                this.bookItems = this.af.list('/bookItems');
             } else {
                 this.authInfo = null
+                this.modalClicked()
             }
-        })
+        })      
     }
 
-    loginClicked() {
+    modalClicked() {
+        let modal = Modal.create(ModalPage);
+        this.navCtrl.present(modal);        
+    }
+    
+    
+    logoutClicked() {
 
         if (this.authInfo && this.authInfo.email) {
             this.auth.logout();
             return;
         }
-
-        // This will perform popup auth with google oauth and the scope will be email
-        // Because those options were provided through bootstrap to DI, and we're overriding the provider.
-        let credentials = {
-            email: 'b@mail.com',
-            password: 'password'
-        }
-
-        this.auth.login(credentials, {
-            provider: AuthProviders.Password,
-            method: AuthMethods.Password
-        }).then((value) => {
-            console.log(value)
-        }).catch((error) => {
-            console.log(error)
-        });
     }
 }
