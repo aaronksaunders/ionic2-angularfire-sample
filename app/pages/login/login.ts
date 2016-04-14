@@ -5,11 +5,11 @@ import {FirebaseAuth, AuthProviders, AuthMethods } from 'angularfire2';
     template: `
         <ion-navbar *navbar>
             <ion-title>
-                Modal
+                Angular Fire Test App
             </ion-title>
         </ion-navbar>
         <ion-content padding>
-            <h1>My Modal Page</h1>
+            <h1>User Login</h1>
             <form  #loginCreds="ngForm" (ngSubmit)="login(loginCreds.value)">
             <ion-item>
                 <ion-label>Username</ion-label>
@@ -24,12 +24,17 @@ import {FirebaseAuth, AuthProviders, AuthMethods } from 'angularfire2';
             <div padding>
                 <button block type="submit">Login</button>        
             </div>
-
+            <div padding>
+                <p *ngIf="error" class="error">Error:&nbsp;{{ error.code }}</p>  
+            </div>
             </form>
         </ion-content>
     `
 })
 export class ModalPage {
+    
+    error: any
+    
     constructor(public auth: FirebaseAuth, public viewCtrl: ViewController) { }
     /** 
      * this will dismiss the modal page
@@ -51,6 +56,7 @@ export class ModalPage {
             console.log(value)
             this.dismiss()
         }).catch((error) => {
+            this.error = error
             console.log(error)
         });
 

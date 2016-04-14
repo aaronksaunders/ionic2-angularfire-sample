@@ -10,7 +10,7 @@ import {FirebaseAuth, AuthProviders, AuthMethods } from 'angularfire2';
     template: `
         <ion-navbar *navbar>
             <ion-title>
-                Home
+                Angular Fire Test App
             </ion-title>
             <ion-buttons end>
                 <button (click)="logoutClicked()">
