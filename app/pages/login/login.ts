@@ -31,20 +31,19 @@ import {FirebaseAuth, AuthProviders, AuthMethods } from 'angularfire2';
 })
 export class ModalPage {
     constructor(public auth: FirebaseAuth, public viewCtrl: ViewController) { }
-
+    /** 
+     * this will dismiss the modal page
+     */
     dismiss() {
         this.viewCtrl.dismiss();
     }
 
+    /**
+     *  this logs in the user using the form credentials
+     */
     login(credentials) {
 
-        // This will perform popup auth with google oauth and the scope will be email
-        // Because those options were provided through bootstrap to DI, and we're overriding the provider.
-        //let credentials = {
-        //    email: 'b@mail.com',
-        //    password: 'password'
-        //}
-
+        // login usig the email/password auth provider
         this.auth.login(credentials, {
             provider: AuthProviders.Password,
             method: AuthMethods.Password

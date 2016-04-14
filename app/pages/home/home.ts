@@ -1,4 +1,4 @@
-import {Modal, NavController,Page} from 'ionic-angular';
+import {Modal, NavController, Page} from 'ionic-angular';
 import {Component, OnInit} from 'angular2/core';
 import {AngularFire} from 'angularfire2';
 import {Observable} from 'rxjs/Observable';
@@ -39,28 +39,40 @@ export class HomePage implements OnInit {
     authInfo: any
 
     constructor(public af: AngularFire, public auth: FirebaseAuth, public navCtrl: NavController) {
-
+        // dont do anything heavy here... do it in ngOnInit
     }
-    
+
     ngOnInit() {
-          this.auth.subscribe((data) => {
+
+        // subscribe to the auth object to check for the login status
+        // of the user, if logged in, save some user information and
+        // execute the firebase query...
+        // .. otherwise
+        // show the login modal page
+        this.auth.subscribe((data) => {
             console.log("in auth subscribe", data)
             if (data) {
                 this.authInfo = data.password
                 this.bookItems = this.af.list('/bookItems');
             } else {
                 this.authInfo = null
-                this.modalClicked()
+                this.displayLoginModal()
             }
-        })      
+        })
     }
 
-    modalClicked() {
+    /**
+     * displays the login window
+     */
+    displayLoginModal() {
         let modal = Modal.create(ModalPage);
-        this.navCtrl.present(modal);        
+        this.navCtrl.present(modal);
     }
-    
-    
+
+
+    /**
+     * logs out the current user
+     */
     logoutClicked() {
 
         if (this.authInfo && this.authInfo.email) {
