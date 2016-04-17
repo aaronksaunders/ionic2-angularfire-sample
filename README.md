@@ -1,5 +1,13 @@
 # Integrating Firebase with AngularFire2 into AngularJS & Ionic2
 
+In the classes I teach I get asked every semester to show how to integrate Firebase into an application and in the past I did not do it because there were already so many demos already available. This time I finally gave in and started to play around with Firebase and Ionic2.
+
+The demo shows the following
+
+- Login with Username and Password
+- Create Accounts with Username and Password
+- Display List of information based on Security Rules in Firebase
+
 ###This Application was tested with the following configuration
 
 ```
