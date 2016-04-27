@@ -15,7 +15,7 @@ import {
     template: '<ion-nav [root]="rootPage"></ion-nav>',
     providers: [
         FIREBASE_PROVIDERS,
-        defaultFirebase('https://[YOUR-APP-NAME].firebaseio.com/'),
+        defaultFirebase('https://clearlyinnovative-firebasestarterapp.firebaseio.com/'),
         firebaseAuthConfig({
             provider: AuthProviders.Password,
             method: AuthMethods.Password,
