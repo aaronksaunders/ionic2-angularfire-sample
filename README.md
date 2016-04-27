@@ -26,15 +26,14 @@ Node Version: v5.0.0
 Xcode version: Xcode 7.2.1 Build version 7C1002
 ```
 
-###NPM Configuration
+###Update NPM Configuration after checking out the project
 ```
-npm install angularfire2 --save-dev
-
-npm install firebase --save-dev
-
-typings install angularfire2 --save --ambient ( nothing was available at the time of creating this post )
-
-typings install firebase --save --ambient
+npm install 
+```
+###Use your own Firebase Account
+You will need to change the following code in `app.ts`
+```
+defaultFirebase('https://[YOUR-APP-NAME].firebaseio.com/'),
 ```
 ###Non AngularFire Example
 Here is a link to a similar application using the Firebase REST APIs
