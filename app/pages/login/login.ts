@@ -10,7 +10,7 @@ import {FirebaseAuth, AuthProviders, AuthMethods } from 'angularfire2';
         </ion-navbar>
         <ion-content padding>
             <h1>User Login</h1>
-            <form  #loginCreds="ngForm" (ngSubmit)="login(loginCreds.value)">
+            <form  #loginCreds="ngForm" >
             <ion-item>
                 <ion-label>Username</ion-label>
                 <ion-input type="text" ngControl="email"></ion-input>
@@ -22,7 +22,10 @@ import {FirebaseAuth, AuthProviders, AuthMethods } from 'angularfire2';
             </ion-item>
 
             <div padding>
-                <button block type="submit">Login</button>        
+                <button block (click)="login(loginCreds.value, $event)">Login</button>        
+            </div>
+            <div padding>
+                <button block (click)="registerUser(loginCreds.value, $event)">Create Account</button>        
             </div>
             <div padding>
                 <p *ngIf="error" class="error">Error:&nbsp;{{ error.code }}</p>  
@@ -32,9 +35,9 @@ import {FirebaseAuth, AuthProviders, AuthMethods } from 'angularfire2';
     `
 })
 export class LoginPage {
-    
+
     error: any
-    
+
     constructor(public auth: FirebaseAuth, public viewCtrl: ViewController) { }
     /** 
      * this will dismiss the modal page
@@ -44,9 +47,33 @@ export class LoginPage {
     }
 
     /**
-     *  this logs in the user using the form credentials
+     * this create in the user using the form credentials. 
+     *
+     * we are preventing the default behavor of submitting 
+     * the form
+     * 
+     * @param _credentials {Object} the email and password from the form
+     * @param _event {Object} the event information from the form submit
      */
-    login(credentials) {
+    registerUser(_credentials, _event) {
+        _event.preventDefault();
+
+        this.auth.createUser(_credentials).then((value) => {
+            console.log(value)
+            this.dismiss()
+        }).catch((error) => {
+            this.error = error
+            console.log(error)
+        });
+    }
+    /**
+     *  this logs in the user using the form credentials
+     * 
+     * @param _credentials {Object} the email and password from the form
+     * @param _event {Object} the event information from the form submit
+     */
+    login(credentials, _event) {
+        _event.preventDefault();
 
         // login usig the email/password auth provider
         this.auth.login(credentials, {
