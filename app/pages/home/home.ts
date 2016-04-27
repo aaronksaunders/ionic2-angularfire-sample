@@ -2,7 +2,7 @@ import {Modal, NavController, Page} from 'ionic-angular';
 import {Component, OnInit} from 'angular2/core';
 import {AngularFire} from 'angularfire2';
 import {Observable} from 'rxjs/Observable';
-import {ModalPage} from '../login/login'
+import {LoginPage} from '../login/login'
 
 import {FirebaseAuth, AuthProviders, AuthMethods } from 'angularfire2';
 
@@ -15,6 +15,7 @@ import {FirebaseAuth, AuthProviders, AuthMethods } from 'angularfire2';
             <ion-buttons end>
                 <button (click)="logoutClicked()">
                 <ion-icon name="contact"></ion-icon>
+                Logout
                 </button>
             </ion-buttons>            
         </ion-navbar>
@@ -65,8 +66,8 @@ export class HomePage implements OnInit {
      * displays the login window
      */
     displayLoginModal() {
-        let modal = Modal.create(ModalPage);
-        this.navCtrl.present(modal);
+        let loginPage = Modal.create(LoginPage);
+        this.navCtrl.present(loginPage);
     }
 
 

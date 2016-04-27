@@ -31,7 +31,7 @@ import {FirebaseAuth, AuthProviders, AuthMethods } from 'angularfire2';
         </ion-content>
     `
 })
-export class ModalPage {
+export class LoginPage {
     
     error: any
     
