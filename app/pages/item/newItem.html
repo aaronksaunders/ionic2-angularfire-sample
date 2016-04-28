@@ -8,15 +8,15 @@
     <form #modelData="ngForm" (ngSubmit)="addTheItem(modelData.value)">
         <ion-item>
             <ion-label>Title</ion-label>
-            <ion-input type="text" ngControl="title"></ion-input>
+            <ion-input required type="text" ngControl="title"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label>Description</ion-label>
-            <ion-input type="text" ngControl="description"></ion-input>
+            <ion-input required type="text" ngControl="description"></ion-input>
         </ion-item>
 
         <div padding>
-            <button block type="submit">Add New Item</button>
+            <button block type="submit" [disabled]="!modelData.valid">Add New Item</button>
             <button block (click)="cancelItem($event)">Cancel</button>
         </div>
         <div padding>
