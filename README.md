@@ -1,4 +1,17 @@
 # Integrating Firebase with AngularFire2 into AngularJS & Ionic2
+---
+####PART TWO
+- Restructuring code for a larger project with Ionic2 and AngularFire
+- Adding the ability to create users using AngularFire2
+- Adding Items to the List in AngularFire2
+- Passing parameters to Modals in Ionic2
+
+####PART ONE - see Tag v1.0 - https://github.com/aaronksaunders/ionic2-angularfire-sample/tree/v1.0
+- Basic Querying of Objects in AngularFire2
+- Logging into existing Account
+
+
+----
 
 In the classes I teach I get asked every semester to show how to integrate Firebase into an application and in the past I did not do it because there were already so many demos already available. This time I finally gave in and started to play around with Firebase and Ionic2.
 
@@ -44,13 +57,3 @@ Here is a link to a similar application using the Firebase REST APIs
 - [https://github.com/aaronksaunders/ionic2-angularfire-sample](https://github.com/aaronksaunders/ionic2-angularfire-sample)
 - [https://github.com/aaronksaunders/kinvey-starter-ionic2](https://github.com/aaronksaunders/kinvey-starter-ionic2)
 - [https://github.com/aaronksaunders/Ionic2-NutritionSample](https://github.com/aaronksaunders/Ionic2-NutritionSample)
-
-##PART ONE - see Tag v1.0 - https://github.com/aaronksaunders/ionic2-angularfire-sample/tree/v1.0
-- Basic Querying of Objects in AngularFire2
-- Logging into existing Account
-
-##PART TWO
-- Restructuring code for a larger project with Ionic2 and AngularFire
-- Adding the ability to create users using AngularFire2
-- Adding Items to the List in AngularFire2
-- Passing parameters to Modals in Ionic2
