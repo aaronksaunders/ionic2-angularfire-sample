@@ -45,7 +45,7 @@ Here is a link to a similar application using the Firebase REST APIs
 - [https://github.com/aaronksaunders/kinvey-starter-ionic2](https://github.com/aaronksaunders/kinvey-starter-ionic2)
 - [https://github.com/aaronksaunders/Ionic2-NutritionSample](https://github.com/aaronksaunders/Ionic2-NutritionSample)
 
-##PART ONE - see Tag v1.0
+##PART ONE - see Tag v1.0 - https://github.com/aaronksaunders/ionic2-angularfire-sample/tree/v1.0
 - Basic Querying of Objects in AngularFire2
 - Logging into existing Account
 
