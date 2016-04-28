@@ -1,0 +1,33 @@
+<ion-navbar *navbar>
+    <ion-title>
+        Angular Fire Test App
+    </ion-title>
+    <ion-buttons end>
+        <button (click)="logoutClicked()">
+            <ion-icon name="contact"></ion-icon>
+            Logout
+        </button>
+    </ion-buttons>
+</ion-navbar>
+
+<ion-content class="home">
+    <ion-item>
+        <ion-row>
+            <ion-col width-80 style="margin-top:8px">
+                <div *ngIf="auth | async">You are logged in as {{authInfo.email}}</div>
+                <div *ngIf="!(auth | async)">Please log in</div>
+            </ion-col>
+            <ion-col width-20>
+                <button (click)="addNewItemClicked()">Add Item</button>
+            </ion-col>
+        </ion-row>
+    </ion-item>
+    <ion-card *ngFor="#item of textItems | async">
+        <ion-card-header>
+            {{item.title}}
+        </ion-card-header>
+        <ion-card-content>
+            {{item.description}}
+        </ion-card-content>
+    </ion-card>
+</ion-content>

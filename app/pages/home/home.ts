@@ -1,45 +1,24 @@
 import {Modal, NavController, Page} from 'ionic-angular';
-import {Component, OnInit} from 'angular2/core';
+import {Component, OnInit, Inject} from 'angular2/core';
 import {AngularFire} from 'angularfire2';
 import {Observable} from 'rxjs/Observable';
 import {LoginPage} from '../login/login'
+import {NewItemModal} from '../item/newItem'
 
-import {FirebaseAuth, AuthProviders, AuthMethods } from 'angularfire2';
+import {FirebaseAuth, AuthProviders, AuthMethods, FirebaseRef } from 'angularfire2';
 
 @Page({
-    template: `
-        <ion-navbar *navbar>
-            <ion-title>
-                Angular Fire Test App
-            </ion-title>
-            <ion-buttons end>
-                <button (click)="logoutClicked()">
-                <ion-icon name="contact"></ion-icon>
-                Logout
-                </button>
-            </ion-buttons>            
-        </ion-navbar>
-
-        <ion-content class="home">
-            <ion-item>
-                <div *ngIf="auth | async">You are logged in as {{authInfo.email}}</div>
-                <div *ngIf="!(auth | async)">Please log in</div>
-            </ion-item>
-            <ion-card  *ngFor="#item of bookItems | async">
-                <ion-card-header>
-                    {{item.volumeInfo.title}}
-                </ion-card-header>
-                <ion-card-content>
-                    {{item.volumeInfo.description}}
-                </ion-card-content>
-            </ion-card>
-        </ion-content>`
+    templateUrl: 'build/pages/home/home.html'
 })
 export class HomePage implements OnInit {
-    bookItems: Observable<any[]>;
+    textItems: Observable<any[]>;
     authInfo: any
 
-    constructor(public af: AngularFire, public auth: FirebaseAuth, public navCtrl: NavController) {
+    constructor(
+        @Inject(FirebaseRef) public ref: Firebase,
+        public af: AngularFire,
+        public auth: FirebaseAuth,
+        public navCtrl: NavController) {
         // dont do anything heavy here... do it in ngOnInit
     }
 
@@ -54,7 +33,7 @@ export class HomePage implements OnInit {
             console.log("in auth subscribe", data)
             if (data) {
                 this.authInfo = data.password
-                this.bookItems = this.af.list('/bookItems');
+                this.textItems = this.af.list('/textItems');
             } else {
                 this.authInfo = null
                 this.displayLoginModal()
@@ -70,6 +49,16 @@ export class HomePage implements OnInit {
         this.navCtrl.present(loginPage);
     }
 
+    /**
+     * adds a new item to firebase /textItems
+     * 
+     * pass in the auth information to the modal to associate the user with the newly
+     * created entry
+     */
+    addNewItemClicked(_data) {
+        let newItemPage = Modal.create(NewItemModal, {"user": this.authInfo});
+        this.navCtrl.present(newItemPage);
+    }
 
     /**
      * logs out the current user

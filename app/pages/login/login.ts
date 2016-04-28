@@ -2,37 +2,7 @@ import {Modal, NavController, Page, ViewController} from 'ionic-angular';
 import {FirebaseAuth, AuthProviders, AuthMethods } from 'angularfire2';
 
 @Page({
-    template: `
-        <ion-navbar *navbar>
-            <ion-title>
-                Angular Fire Test App
-            </ion-title>
-        </ion-navbar>
-        <ion-content padding>
-            <h1>User Login</h1>
-            <form  #loginCreds="ngForm" >
-            <ion-item>
-                <ion-label>Username</ion-label>
-                <ion-input type="text" ngControl="email"></ion-input>
-            </ion-item>
-
-            <ion-item>
-                <ion-label>Password</ion-label>
-                <ion-input type="password" ngControl="password"></ion-input>
-            </ion-item>
-
-            <div padding>
-                <button block (click)="login(loginCreds.value, $event)">Login</button>        
-            </div>
-            <div padding>
-                <button block (click)="registerUser(loginCreds.value, $event)">Create Account</button>        
-            </div>
-            <div padding>
-                <p *ngIf="error" class="error">Error:&nbsp;{{ error.code }}</p>  
-            </div>
-            </form>
-        </ion-content>
-    `
+    templateUrl: 'build/pages/login/login.html'
 })
 export class LoginPage {
 
@@ -86,8 +56,5 @@ export class LoginPage {
             this.error = error
             console.log(error)
         });
-
-
     }
-
 }
