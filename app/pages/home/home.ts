@@ -3,12 +3,15 @@ import {Component, OnInit, Inject} from 'angular2/core';
 import {AngularFire} from 'angularfire2';
 import {Observable} from 'rxjs/Observable';
 import {LoginPage} from '../login/login'
-import {NewItemModal} from '../item/newItem'
+import {NewItemModal} from '../item/newItem';
+import {MomentDate} from '../../lib/MomentDate'
+
 
 import {FirebaseAuth, AuthProviders, AuthMethods, FirebaseRef } from 'angularfire2';
 
 @Page({
-    templateUrl: 'build/pages/home/home.html'
+    templateUrl: 'build/pages/home/home.html',
+    pipes: [MomentDate]
 })
 export class HomePage implements OnInit {
     textItems: Observable<any[]>;

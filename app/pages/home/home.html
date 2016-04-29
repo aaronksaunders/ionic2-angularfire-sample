@@ -27,7 +27,7 @@
             {{item.title}}
         </ion-card-header>
         <ion-card-content>
-            {{item.description}}
+            {{item.description}} - {{ item.timestamp | MomentDate:"LLL"}}
         </ion-card-content>
     </ion-card>
 </ion-content>
