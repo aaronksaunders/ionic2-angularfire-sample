@@ -1,5 +1,6 @@
 import {Modal, NavController, Page, ViewController} from 'ionic-angular';
-import {FirebaseAuth, AuthProviders, AuthMethods } from 'angularfire2';
+import {Component, OnInit, Inject} from 'angular2/core';
+import {FirebaseAuth, FirebaseRef, AuthProviders, AuthMethods } from 'angularfire2';
 
 @Page({
     templateUrl: 'build/pages/login/login.html'
@@ -8,7 +9,9 @@ export class LoginPage {
 
     error: any
 
-    constructor(public auth: FirebaseAuth, public viewCtrl: ViewController) { }
+    constructor(public auth: FirebaseAuth,
+        @Inject(FirebaseRef) public ref: Firebase,
+        public viewCtrl: ViewController) { }
     /** 
      * this will dismiss the modal page
      */
@@ -28,16 +31,23 @@ export class LoginPage {
     registerUser(_credentials, _event) {
         _event.preventDefault();
 
-        this.auth.createUser(_credentials).then((value) => {
-            console.log(value)
-            this.dismiss()
+        this.auth.createUser(_credentials).then((authData: FirebaseAuthData) => {
+            console.log(authData)
+
+            _credentials.created = true;
+
+            return this.login(_credentials, _event);
+
         }).catch((error) => {
             this.error = error
             console.log(error)
         });
     }
     /**
-     *  this logs in the user using the form credentials
+     * this logs in the user using the form credentials.
+     * 
+     * if the user is a new user, then we need to create the user AFTER
+     * we have successfully logged in
      * 
      * @param _credentials {Object} the email and password from the form
      * @param _event {Object} the event information from the form submit
@@ -45,12 +55,32 @@ export class LoginPage {
     login(credentials, _event) {
         _event.preventDefault();
 
+        // if this was called from the register user,  the check if we 
+        // need to create the user object or not
+        let addUser = credentials.created
+        credentials.created = null;
+
         // login usig the email/password auth provider
         this.auth.login(credentials, {
             provider: AuthProviders.Password,
             method: AuthMethods.Password
+        }).then((authData) => {
+            console.log(authData)
+
+            if (addUser) {
+                var auth: FirebaseAuthDataPassword = authData.password
+                return this.ref.child('users')
+                    .child(authData.uid)
+                    .set({
+                        "provider": authData.provider,
+                        "avatar": auth.profileImageURL,
+                        "displayName": auth.email
+                    })
+            } else {
+                this.dismiss()
+            }
+
         }).then((value) => {
-            console.log(value)
             this.dismiss()
         }).catch((error) => {
             this.error = error
