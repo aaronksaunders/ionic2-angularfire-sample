@@ -103,7 +103,8 @@ export class LoginPage {
                     .set({
                         "provider": authData.provider,
                         "avatar": auth.profileImageURL,
-                        "displayName": auth.email
+                        "displayName": auth.email,
+                        "authData" : authData
                     })
             } else {
                 this.dismiss()
