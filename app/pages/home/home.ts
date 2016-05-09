@@ -5,6 +5,7 @@ import {Observable} from 'rxjs/Observable';
 import {LoginPage} from '../login/login'
 import {NewItemModal} from '../item/newItem';
 import {MomentDate} from '../../lib/MomentDate'
+import 'rxjs';
 
 
 import {FirebaseAuth, AuthProviders, AuthMethods, FirebaseRef } from 'angularfire2';
@@ -15,6 +16,7 @@ import {FirebaseAuth, AuthProviders, AuthMethods, FirebaseRef } from 'angularfir
 })
 export class HomePage implements OnInit {
     textItems: Observable<any[]>;
+    usersWithMessages: Observable<any[]>;
     authInfo: any
 
     constructor(
@@ -35,13 +37,34 @@ export class HomePage implements OnInit {
         this.auth.subscribe((data) => {
             console.log("in auth subscribe", data)
             if (data) {
-                this.authInfo = data.password
+				if (data.twitter) {
+					this.authInfo =  data.twitter
+					this.authInfo.displayName = data.twitter.displayName
+				} else if (data.github) {
+					this.authInfo =  data.github 
+					this.authInfo.displayName = data.github.displayName
+				} else {
+					this.authInfo = data.password 
+					this.authInfo.displayName = data.password.email
+				}
                 this.textItems = this.af.list('/textItems');
+
+                //this.getMoreData()
+
             } else {
                 this.authInfo = null
                 this.displayLoginModal()
             }
         })
+    }
+
+    getMoreData() {
+    this.usersWithMessages = this.af.list('/users').map((_users) => {
+        return _users.map((_user) => {
+            _user.messages = this.af.object("/userObjects/public-messages/" +_user.$key)
+            return _user
+        })
+    })
     }
 
     /**
@@ -59,7 +82,7 @@ export class HomePage implements OnInit {
      * created entry
      */
     addNewItemClicked(_data) {
-        let newItemPage = Modal.create(NewItemModal, {"user": this.authInfo});
+        let newItemPage = Modal.create(NewItemModal, { "user": this.authInfo });
         this.navCtrl.present(newItemPage);
     }
 
@@ -68,7 +91,7 @@ export class HomePage implements OnInit {
      */
     logoutClicked() {
 
-        if (this.authInfo && this.authInfo.email) {
+        if (this.authInfo && (this.authInfo.email ||  this.authInfo.accessToken)) {
             this.auth.logout();
             return;
         }

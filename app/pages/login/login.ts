@@ -43,6 +43,35 @@ export class LoginPage {
             console.log(error)
         });
     }
+    
+    registerUserWithGitHub(_credentials, _event) {
+        _event.preventDefault();
+        
+        this.auth.login({
+            provider: AuthProviders.Github,
+            method: AuthMethods.Popup
+        }).then((value) => {
+            this.dismiss()
+        }).catch((error) => {
+            this.error = error
+            console.log(error)
+        });
+    }
+    
+    
+    registerUserWithTwitter(_credentials, _event) {
+        _event.preventDefault();
+        
+        this.auth.login({
+            provider: AuthProviders.Twitter,
+            method: AuthMethods.Popup
+        }).then((value) => {
+            this.dismiss()
+        }).catch((error) => {
+            this.error = error
+            console.log(error)
+        });
+    }
     /**
      * this logs in the user using the form credentials.
      * 

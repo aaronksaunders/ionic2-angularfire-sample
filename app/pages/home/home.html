@@ -14,7 +14,7 @@
     <ion-item>
         <ion-row>
             <ion-col width-80 style="margin-top:8px">
-                <div *ngIf="auth | async">You are logged in as {{authInfo.email}}</div>
+                <div *ngIf="auth | async">You are logged in as {{authInfo && authInfo.displayName}}</div>
                 <div *ngIf="!(auth | async)">Please log in</div>
             </ion-col>
             <ion-col width-20>
@@ -28,6 +28,14 @@
         </ion-card-header>
         <ion-card-content>
             {{item.description}} - {{ item.timestamp | MomentDate:"LLL"}}
+        </ion-card-content>
+    </ion-card>
+    <ion-card *ngFor="#user of usersWithMessages | async">
+        <ion-card-header>
+            {{user.displayName}}
+        </ion-card-header>
+        <ion-card-content>
+            {{ (user.messages | async) | json}}
         </ion-card-content>
     </ion-card>
 </ion-content>

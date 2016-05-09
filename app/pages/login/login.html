@@ -19,6 +19,10 @@
         <div padding>
             <button block (click)="login(loginCreds.value, $event)">Login</button>
             <button block (click)="registerUser(loginCreds.value, $event)">Create Account</button>
+         </div>        
+        <div padding>
+            <button block (click)="registerUserWithGitHub(loginCreds.value, $event)">Connect with GitHub</button>
+            <button block (click)="registerUserWithTwitter(loginCreds.value, $event)">Connect with Twitter</button>
         </div>
         <div padding>
             <p *ngIf="error" class="error">Error:&nbsp;{{ error.code }}</p>
