@@ -1,5 +1,11 @@
 # Integrating Firebase with AngularFire2 into AngularJS & Ionic2
 ---
+**UPDATE MAY 14th 2016:** Firebase AngularFire2 has been updated to work with the latest version of Angular2 and Ionic2 has not so this will only work if you load the specific version of AngularFire2 with your application
+```
+"angular2": "2.0.0-beta.13",
+"angularfire2": "^2.0.0-alpha.16",
+```
+--
 ####PART TWO
 - Restructuring code for a larger project with Ionic2 and AngularFire
 - Adding the ability to create users using AngularFire2
