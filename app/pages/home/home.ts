@@ -1,5 +1,5 @@
 import {Modal, NavController, Page} from 'ionic-angular';
-import {Component, OnInit, Inject} from 'angular2/core';
+import {Component, OnInit, Inject} from '@angular/core';
 import {AngularFire} from 'angularfire2';
 import {Observable} from 'rxjs/Observable';
 import {LoginPage} from '../login/login'

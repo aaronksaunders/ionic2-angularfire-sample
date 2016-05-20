@@ -1,5 +1,5 @@
 
-import {Pipe} from 'angular2/core';
+import {Pipe} from '@angular/core';
 import * as moment from 'moment';
 
 // Tell Angular2 we're creating a Pipe with TypeScript decorators

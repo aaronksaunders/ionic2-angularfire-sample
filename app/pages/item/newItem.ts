@@ -1,5 +1,5 @@
 import {Modal, NavController, Page, ViewController, NavParams} from 'ionic-angular';
-import {Component, OnInit, Inject} from 'angular2/core';
+import {Component, OnInit, Inject} from '@angular/core';
 import { FirebaseRef } from 'angularfire2';
 
 @Page({
