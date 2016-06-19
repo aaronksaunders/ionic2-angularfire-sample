@@ -114,6 +114,8 @@ export class HomePage implements OnInit {
             this.af.auth.logout();
             this.authInfo = null
             this.displayLoginModal()
+        } else {
+            this.displayLoginModal()
         }
     }
 }
