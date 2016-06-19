@@ -5,7 +5,7 @@
     <ion-buttons end>
         <button (click)="logoutClicked()">
             <ion-icon name="contact"></ion-icon>
-            Logout
+            {{buttonTitle}}
         </button>
     </ion-buttons>
 </ion-navbar>
@@ -14,15 +14,15 @@
     <ion-item>
         <ion-row>
             <ion-col width-80 style="margin-top:8px">
-                <div *ngIf="auth | async">You are logged in as {{authInfo && authInfo.displayName}}</div>
-                <div *ngIf="!(auth | async)">Please log in</div>
+                <div *ngIf="displayName">You are logged in as {{authInfo && displayName}}</div>
+                <div *ngIf="!displayName">Please log in</div>
             </ion-col>
             <ion-col width-20>
                 <button (click)="addNewItemClicked()">Add Item</button>
             </ion-col>
         </ion-row>
     </ion-item>
-    <ion-card *ngFor="#item of textItems | async">
+    <ion-card *ngFor="let item of textItems | async">
         <ion-card-header>
             {{item.title}}
         </ion-card-header>
@@ -30,7 +30,7 @@
             {{item.description}} - {{ item.timestamp | MomentDate:"LLL"}}
         </ion-card-content>
     </ion-card>
-    <ion-card *ngFor="#user of usersWithMessages | async">
+    <ion-card *ngFor="let user of usersWithMessages | async">
         <ion-card-header>
             {{user.displayName}}
         </ion-card-header>

@@ -1,6 +1,5 @@
 import {Modal, NavController, Page} from 'ionic-angular';
 import {Component, OnInit, Inject} from '@angular/core';
-import {AngularFire} from 'angularfire2';
 import {Observable} from 'rxjs/Observable';
 import {LoginPage} from '../login/login'
 import {NewItemModal} from '../item/newItem';
@@ -8,7 +7,7 @@ import {MomentDate} from '../../lib/MomentDate'
 import 'rxjs';
 
 
-import {FirebaseAuth, AuthProviders, AuthMethods, FirebaseRef } from 'angularfire2';
+import { AngularFire, AuthProviders, AuthMethods } from 'angularfire2';
 
 @Page({
     templateUrl: 'build/pages/home/home.html',
@@ -18,11 +17,11 @@ export class HomePage implements OnInit {
     textItems: Observable<any[]>;
     usersWithMessages: Observable<any[]>;
     authInfo: any
+    displayName: any
+    buttonTitle = "LOGIN"
 
     constructor(
-        @Inject(FirebaseRef) public ref: Firebase,
         public af: AngularFire,
-        public auth: FirebaseAuth,
         public navCtrl: NavController) {
         // dont do anything heavy here... do it in ngOnInit
     }
@@ -34,37 +33,57 @@ export class HomePage implements OnInit {
         // execute the firebase query...
         // .. otherwise
         // show the login modal page
-        this.auth.subscribe((data) => {
+        this.af.auth.subscribe((data) => {
             console.log("in auth subscribe", data)
+
+
             if (data) {
-				if (data.twitter) {
-					this.authInfo =  data.twitter
-					this.authInfo.displayName = data.twitter.displayName
-				} else if (data.github) {
-					this.authInfo =  data.github 
-					this.authInfo.displayName = data.github.displayName
-				} else {
-					this.authInfo = data.password 
-					this.authInfo.displayName = data.password.email
-				}
-                this.textItems = this.af.list('/textItems');
+            
+            this.af.auth.unsubscribe()
+
+                this.buttonTitle = "LOGOUT"
+
+                // if no user, then add it
+                this.addOrUpdateUser(data)
+
+
+                if (data.auth.providerData[0].providerId === "twitter.com") {
+                    this.authInfo = data.auth.providerData[0]
+                    this.displayName = data.auth.providerData[0].displayName
+                } else if (data.github) {
+                    this.authInfo = data.github
+                    //this.authInfo.displayName = data.github.displayName
+                } else {
+                    this.authInfo = data.auth || {}
+                    this.displayName = data.auth.providerData[0].email
+                }
+                this.textItems = this.af.database.list('/textItems')
 
                 //this.getMoreData()
 
             } else {
+                this.buttonTitle = "LOGIN"
                 this.authInfo = null
                 this.displayLoginModal()
             }
         })
     }
 
-    getMoreData() {
-    this.usersWithMessages = this.af.list('/users').map((_users) => {
-        return _users.map((_user) => {
-            _user.messages = this.af.object("/userObjects/public-messages/" +_user.$key)
-            return _user
+    addOrUpdateUser(_authData) {
+        const itemObservable = this.af.database.object('/users/' + _authData.uid);
+        itemObservable.set({
+            "provider": _authData.auth.providerData[0].providerId,
+            "avatar": _authData.auth.photoURL || "MISSING",
+            "displayName": _authData.auth.providerData[0].displayName || _authData.auth.email,
         })
-    })
+    }
+    getMoreData() {
+        this.usersWithMessages = this.af.list('/users').map((_users) => {
+            return _users.map((_user) => {
+                _user.messages = this.af.object("/userObjects/public-messages/" + _user.$key)
+                return _user
+            })
+        })
     }
 
     /**
@@ -91,9 +110,10 @@ export class HomePage implements OnInit {
      */
     logoutClicked() {
 
-        if (this.authInfo && (this.authInfo.email ||  this.authInfo.accessToken)) {
-            this.auth.logout();
-            return;
+        if (this.authInfo && (this.authInfo.email || this.authInfo.providerId)) {
+            this.af.auth.logout();
+            this.authInfo = null
+            this.displayLoginModal()
         }
     }
 }

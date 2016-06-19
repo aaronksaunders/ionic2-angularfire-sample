@@ -1,6 +1,6 @@
 import {Modal, NavController, Page, ViewController, NavParams} from 'ionic-angular';
 import {Component, OnInit, Inject} from '@angular/core';
-import { FirebaseRef } from 'angularfire2';
+import { AngularFire } from 'angularfire2';
 
 @Page({
     templateUrl: 'build/pages/item/newItem.html'
@@ -16,7 +16,7 @@ export class NewItemModal {
      * when the object is created. This is how we access the user auth data
      */
     constructor(
-        @Inject(FirebaseRef) public ref: Firebase,
+        public af: AngularFire,
         public viewCtrl: ViewController,
         private _navParams: NavParams) {
         console.log("initialize NewItemModal")
@@ -41,20 +41,19 @@ export class NewItemModal {
      * adds the item to the path /textItems
      */
     addTheItem(_data) {
-
-        this.ref.child('/textItems')
-            .push({
-                "title": _data.title,
-                "description": _data.description,
-                // auth data from the navParam object...
-                "user": this._navParams.get("user").email,
-                "timestamp": (new Date()).getTime()
-            }).then((_data) => {
-                console.log(_data)
-                this.dismiss()
-            }).catch((_error) => {
-                console.log(_error)
-            })
+        var textItems = this.af.database.list('/textItems');
+        textItems.push({
+            "title": _data.title,
+            "description": _data.description,
+            // auth data from the navParam object...
+            "user": this._navParams.get("user").email,
+            "timestamp": (new Date()).getTime()
+        }).then((_data) => {
+            console.log(_data)
+            this.dismiss()
+        }).catch((_error) => {
+            console.log(_error)
+        })
     }
 
 }

@@ -1,5 +1,6 @@
 //import 'es6-shim';
-import {App, Platform} from 'ionic-angular';
+import {Component} from '@angular/core';
+import {ionicBootstrap, Platform} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 import {HomePage} from './pages/home/home';
 
@@ -11,19 +12,24 @@ import {
     AuthMethods
 } from 'angularfire2';
 
-@App({
+@Component({
     template: '<ion-nav [root]="rootPage"></ion-nav>',
     providers: [
         FIREBASE_PROVIDERS,
-        defaultFirebase('https://clearlyinnovative-firebasestarterapp.firebaseio.com/'),
+        // Initialize Firebase app  
+        defaultFirebase({
+            apiKey: "AIzaSyDKSySssQO5ne689wcPd6mCzsLAsXG0E3g",
+            authDomain: "clearlyinnovative-firebasestarterapp.firebaseapp.com",
+            databaseURL: "https://clearlyinnovative-firebasestarterapp.firebaseio.com",
+            storageBucket: "clearlyinnovative-firebasestar.appspot.com",
+        }),
         firebaseAuthConfig({
             provider: AuthProviders.Password,
             method: AuthMethods.Password,
             remember: 'default',
             scope: ['email']
         })
-    ],
-    config: {} // http://ionicframework.com/docs/v2/api/config/Config/
+    ]
 })
 export class MyApp {
     rootPage: any = HomePage;
@@ -36,3 +42,5 @@ export class MyApp {
         });
     }
 }
+
+ionicBootstrap(MyApp);
