@@ -1,4 +1,11 @@
 # Integrating Firebase with AngularFire2 into AngularJS & Ionic2
+
+
+######**UPDATE JUNE 19th 2016:**
+
+- Working on updating this sample to AngularFire2 with Firebase3 Support : https://github.com/aaronksaunders/ionic2-angularfire-sample/tree/firebase3-support
+- There is a known issue at this time: https://github.com/angular/angularfire2/issues/243
+
 ---
 ######**UPDATE MAY 20th 2016:** Firebase AngularFire2 has been updated to work with the latest version of Angular2 but is still on version 2.4.2 of Firebase. This sample has been updated to work with AngularFire2 but is currently locked on firebase@2.4.2
 ---
