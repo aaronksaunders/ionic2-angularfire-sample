@@ -18,7 +18,7 @@ import {
         FIREBASE_PROVIDERS,
         // Initialize Firebase app  
         defaultFirebase({
-            apiKey: "AIzaSyDKSySssQO5ne689wcPd6mCzsLAsXG0E3g",
+            apiKey: "YOUR-API-KEY",
             authDomain: "clearlyinnovative-firebasestarterapp.firebaseapp.com",
             databaseURL: "https://clearlyinnovative-firebasestarterapp.firebaseio.com",
             storageBucket: "clearlyinnovative-firebasestar.appspot.com",
