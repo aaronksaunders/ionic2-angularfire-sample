@@ -1,6 +1,6 @@
 import {Modal, NavController, Page, ViewController} from 'ionic-angular';
 import {Component, OnInit, Inject} from '@angular/core';
-import {FirebaseAuth, FirebaseRef, AuthProviders, AuthMethods } from 'angularfire2';
+import {AngularFire, AuthProviders, AuthMethods } from 'angularfire2';
 
 @Page({
     templateUrl: 'build/pages/login/login.html'
@@ -9,8 +9,7 @@ export class LoginPage {
 
     error: any
 
-    constructor(public auth: FirebaseAuth,
-        @Inject(FirebaseRef) public ref: Firebase,
+    constructor(public af: AngularFire,
         public viewCtrl: ViewController) { }
     /** 
      * this will dismiss the modal page
@@ -18,7 +17,6 @@ export class LoginPage {
     dismiss() {
         this.viewCtrl.dismiss();
     }
-
     /**
      * this create in the user using the form credentials. 
      *
@@ -31,23 +29,21 @@ export class LoginPage {
     registerUser(_credentials, _event) {
         _event.preventDefault();
 
-        this.auth.createUser(_credentials).then((authData: FirebaseAuthData) => {
-            console.log(authData)
 
-            _credentials.created = true;
+        this.af.auth.createUser(_credentials)
+            .then((user) => {
+                console.log(`Create User Success:`, user);
+                _credentials.created = true;
 
-            return this.login(_credentials, _event);
-
-        }).catch((error) => {
-            this.error = error
-            console.log(error)
-        });
+                return this.login(_credentials, _event);
+            })
+            .catch(e => console.error(`Create User Failure:`, e));
     }
-    
+
     registerUserWithGitHub(_credentials, _event) {
         _event.preventDefault();
-        
-        this.auth.login({
+
+        this.af.auth.login({
             provider: AuthProviders.Github,
             method: AuthMethods.Popup
         }).then((value) => {
@@ -57,14 +53,30 @@ export class LoginPage {
             console.log(error)
         });
     }
-    
-    
+
+
     registerUserWithTwitter(_credentials, _event) {
         _event.preventDefault();
-        
-        this.auth.login({
+
+        this.af.auth.login({
             provider: AuthProviders.Twitter,
-            method: AuthMethods.Popup
+            method: AuthMethods.Redirect
+        }).then((authData) => {
+            console.log(authData)
+
+            // already has user... need better info??
+            if (!authData) {
+                this.dismiss()
+            }
+
+
+            const itemObservable = this.af.database.object('/users/' + authData.uid);
+            itemObservable.set({
+                "provider": authData.auth.providerData[0].providerId,
+                "avatar": authData.auth.photoURL || "MISSING",
+                "displayName": authData.auth.providerData[0].displayName || authData.auth.email,
+            })
+
         }).then((value) => {
             this.dismiss()
         }).catch((error) => {
@@ -90,26 +102,22 @@ export class LoginPage {
         credentials.created = null;
 
         // login usig the email/password auth provider
-        this.auth.login(credentials, {
+        this.af.auth.login(credentials, {
             provider: AuthProviders.Password,
             method: AuthMethods.Password
         }).then((authData) => {
             console.log(authData)
 
             if (addUser) {
-                var auth: FirebaseAuthDataPassword = authData.password
-                return this.ref.child('users')
-                    .child(authData.uid)
-                    .set({
-                        "provider": authData.provider,
-                        "avatar": auth.profileImageURL,
-                        "displayName": auth.email,
-                        "authData" : authData
-                    })
+                const itemObservable = this.af.database.object('/users/' + authData.uid);
+                itemObservable.set({
+                    "provider": authData.auth.providerData[0].providerId,
+                    "avatar": authData.auth.photoURL || "MISSING",
+                    "displayName": authData.auth.providerData[0].displayName || authData.auth.email,
+                })
             } else {
                 this.dismiss()
             }
-
         }).then((value) => {
             this.dismiss()
         }).catch((error) => {
