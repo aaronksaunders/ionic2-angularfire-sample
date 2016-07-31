@@ -38,8 +38,8 @@ export class HomePage implements OnInit {
 
 
             if (data) {
-            
-            this.af.auth.unsubscribe()
+
+                this.af.auth.unsubscribe()
 
                 this.buttonTitle = "LOGOUT"
 
@@ -103,6 +103,12 @@ export class HomePage implements OnInit {
     addNewItemClicked(_data) {
         let newItemPage = Modal.create(NewItemModal, { "user": this.authInfo });
         this.navCtrl.present(newItemPage);
+    }
+
+    deleteItemClicked(_data) {
+        this.af.database.object("/textItems/" + _data.$key).remove()
+            .then(() => { alert("success") })
+            .catch((_error) => { alert("Error") })
     }
 
     /**

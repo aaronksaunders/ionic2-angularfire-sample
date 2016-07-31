@@ -50,9 +50,11 @@ export class NewItemModal {
             "timestamp": (new Date()).getTime()
         }).then((_data) => {
             console.log(_data)
+            alert("Item Successfully Added")
             this.dismiss()
         }).catch((_error) => {
             console.log(_error)
+            alert("Error Adding Item")
         })
     }
 
