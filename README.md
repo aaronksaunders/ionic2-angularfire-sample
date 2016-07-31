@@ -1,6 +1,13 @@
 # Integrating Firebase with AngularFire2 into AngularJS & Ionic2
 
 
+######**UPDATE JULY 31th 2016:**
+
+- Supportig latest release of the angularfire library
+- have not integrated the social login functionality of demo
+
+---
+
 ######**UPDATE JUNE 19th 2016:**
 
 - Working on updating this sample to AngularFire2 with Firebase3 Support : https://github.com/aaronksaunders/ionic2-angularfire-sample/tree/firebase3-support
