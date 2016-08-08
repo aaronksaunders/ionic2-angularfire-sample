@@ -2,7 +2,7 @@
 ######**UPDATE August 8th 2016:**
 
 - Supportig latest release of the angularfire library
-- ran into issue with Ionic and not being ableto load AngularFire as a dependency, but hacked around it
+- ran into issue with Ionic and not being ableto load AngularFire as a dependency, but hacked around it, https://github.com/driftyco/ionic/issues/7160
 
 ---
 
