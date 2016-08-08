@@ -1,16 +1,37 @@
-import {Modal, NavController, Page, ViewController} from 'ionic-angular';
+import { AngularFire, AuthProviders, AuthMethods, FirebaseAuthState } from 'angularfire2';
 import {Component, OnInit, Inject} from '@angular/core';
-import {AngularFire, AuthProviders, AuthMethods } from 'angularfire2';
+import { NavController, Page, ViewController, NavParams} from 'ionic-angular';
 
-@Page({
-    templateUrl: 'build/pages/login/login.html'
+import { Validators } from '@angular/common';
+import { REACTIVE_FORM_DIRECTIVES, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+
+@Component({
+    templateUrl: 'build/pages/login/login.html',
+    directives: [REACTIVE_FORM_DIRECTIVES]
 })
 export class LoginPage {
 
     error: any
+    af: any
+    loginForm: FormGroup;
 
-    constructor(public af: AngularFire,
-        public viewCtrl: ViewController) { }
+    constructor(public viewCtrl: ViewController,
+        builder: FormBuilder,
+        public _params: NavParams) {
+
+        this.af = _params.get("af");
+
+        this.loginForm = builder.group({
+            'email': [
+                '', // default value
+                [Validators.required, Validators.minLength(5)]
+            ],
+            'password': [
+                '',
+                [Validators.required, Validators.minLength(5)]
+            ]
+        })
+    }
     /** 
      * this will dismiss the modal page
      */
@@ -68,7 +89,6 @@ export class LoginPage {
             if (!authData) {
                 this.dismiss()
             }
-
 
             const itemObservable = this.af.database.object('/users/' + authData.uid);
             itemObservable.set({

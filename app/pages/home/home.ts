@@ -1,5 +1,5 @@
-import {Modal, NavController, Page} from 'ionic-angular';
-import {Component, OnInit, Inject} from '@angular/core';
+import {ModalController, NavController, Page} from 'ionic-angular';
+import {Component, OnInit, Inject, AfterViewInit} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {LoginPage} from '../login/login'
 import {NewItemModal} from '../item/newItem';
@@ -7,7 +7,7 @@ import {MomentDate} from '../../lib/MomentDate'
 import 'rxjs';
 
 
-import { AngularFire, AuthProviders, AuthMethods } from 'angularfire2';
+import { AngularFire, AuthProviders, AuthMethods, FirebaseAuthState } from 'angularfire2';
 
 @Page({
     templateUrl: 'build/pages/home/home.html',
@@ -22,8 +22,13 @@ export class HomePage implements OnInit {
 
     constructor(
         public af: AngularFire,
-        public navCtrl: NavController) {
+        public navCtrl: NavController,
+        public modal: ModalController) {
         // dont do anything heavy here... do it in ngOnInit
+    }
+
+    ionViewDidEnter() {
+        this.af.auth.getAuth() && (this.textItems = this.af.database.list('/textItems'))
     }
 
     ngOnInit() {
@@ -33,11 +38,11 @@ export class HomePage implements OnInit {
         // execute the firebase query...
         // .. otherwise
         // show the login modal page
-        this.af.auth.subscribe((data) => {
+        this.af.auth.subscribe((data: FirebaseAuthState) => {
             console.log("in auth subscribe", data)
 
 
-            if (data) {
+            if (data && !data.anonymous) {
 
                 this.af.auth.unsubscribe()
 
@@ -90,8 +95,8 @@ export class HomePage implements OnInit {
      * displays the login window
      */
     displayLoginModal() {
-        let loginPage = Modal.create(LoginPage);
-        this.navCtrl.present(loginPage);
+        let loginPage = this.modal.create(LoginPage, { af: this.af });
+        loginPage.present();
     }
 
     /**
@@ -101,14 +106,8 @@ export class HomePage implements OnInit {
      * created entry
      */
     addNewItemClicked(_data) {
-        let newItemPage = Modal.create(NewItemModal, { "user": this.authInfo });
-        this.navCtrl.present(newItemPage);
-    }
-
-    deleteItemClicked(_data) {
-        this.af.database.object("/textItems/" + _data.$key).remove()
-            .then(() => { alert("success") })
-            .catch((_error) => { alert("Error") })
+        let newItemPage = this.modal.create(NewItemModal, { "user": this.authInfo });
+        newItemPage.present(newItemPage);
     }
 
     /**

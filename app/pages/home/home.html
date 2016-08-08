@@ -1,16 +1,14 @@
-<ion-header>
-    <ion-navbar>
-        <ion-title>
-            Angular Fire Test App
-        </ion-title>
-        <ion-buttons end>
-            <button (click)="logoutClicked()">
+<ion-navbar *navbar>
+    <ion-title>
+        Angular Fire Test App
+    </ion-title>
+    <ion-buttons end>
+        <button (click)="logoutClicked()">
             <ion-icon name="contact"></ion-icon>
             {{buttonTitle}}
         </button>
-        </ion-buttons>
-    </ion-navbar>
-</ion-header>
+    </ion-buttons>
+</ion-navbar>
 
 <ion-content class="home">
     <ion-item>
@@ -31,9 +29,6 @@
         <ion-card-content>
             {{item.description}} - {{ item.timestamp | MomentDate:"LLL"}}
         </ion-card-content>
-        <ion-col offset-80>
-            <button (click)="deleteItemClicked(item)">Delete Item</button>
-        </ion-col>
     </ion-card>
     <ion-card *ngFor="let user of usersWithMessages | async">
         <ion-card-header>
@@ -42,6 +37,5 @@
         <ion-card-content>
             {{ (user.messages | async) | json}}
         </ion-card-content>
-
     </ion-card>
 </ion-content>
