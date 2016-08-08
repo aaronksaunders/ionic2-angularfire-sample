@@ -19,6 +19,7 @@ export class LoginPage {
         builder: FormBuilder,
         public _params: NavParams) {
 
+        // HAD TO HACK IN THE AngularFire object... :-(
         this.af = _params.get("af");
 
         this.loginForm = builder.group({

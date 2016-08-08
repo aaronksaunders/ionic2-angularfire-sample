@@ -95,6 +95,10 @@ export class HomePage implements OnInit {
      * displays the login window
      */
     displayLoginModal() {
+
+        // I NEEDED TO HACK THE ANGULAR FIRE OBJECT INTO THE ModalController
+        // BECAUSE OF A BUG IN IONIC...
+        //
         let loginPage = this.modal.create(LoginPage, { af: this.af });
         loginPage.present();
     }
