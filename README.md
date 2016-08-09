@@ -1,7 +1,10 @@
 # Integrating Firebase with AngularFire2 into AngularJS & Ionic2
 ######**UPDATE August 8th 2016:**
 
-- Supportig latest release of the angularfire library
+- Supportig latest release of the angularfire library & ionic
+  - ionic 2.0.0-beta.11
+  - angularfire2 2.0.0-beta.2
+  - firebase 3.2.1
 - ran into issue with Ionic and not being ableto load AngularFire as a dependency, but hacked around it, https://github.com/driftyco/ionic/issues/7160
 
 ---
