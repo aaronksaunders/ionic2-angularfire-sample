@@ -25,7 +25,9 @@
             <button block (click)="registerUserWithTwitter(loginForm.value, $event)">Connect with Twitter</button>
         </div>
         <div padding>
-            <p *ngIf="error" class="error">Error:&nbsp;{{ error.code }}</p>
+            <strong>
+            <h4 *ngIf="error" style="color:red">Error:&nbsp;{{ error.message }}</h4>
+            </strong>
         </div>
     </form>
 </ion-content>
