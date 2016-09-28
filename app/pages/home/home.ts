@@ -9,6 +9,9 @@ import 'rxjs';
 
 import { AngularFire, AuthProviders, AuthMethods, FirebaseAuthState } from 'angularfire2';
 
+
+declare var firebase
+
 @Page({
     templateUrl: 'build/pages/home/home.html',
     pipes: [MomentDate]
@@ -38,29 +41,30 @@ export class HomePage implements OnInit {
         // execute the firebase query...
         // .. otherwise
         // show the login modal page
-        this.af.auth.subscribe((data: FirebaseAuthState) => {
-            console.log("in auth subscribe", data)
+
+        firebase.auth().onAuthStateChanged((_currentUser) => {
+            console.log("in auth subscribe", _currentUser)
 
 
-            if (data && !data.anonymous) {
+            if (_currentUser && !_currentUser.anonymous) {
 
                 this.af.auth.unsubscribe()
 
                 this.buttonTitle = "LOGOUT"
 
                 // if no user, then add it
-                this.addOrUpdateUser(data)
+                this.addOrUpdateUser(_currentUser)
 
 
-                if (data.auth.providerData[0].providerId === "twitter.com") {
-                    this.authInfo = data.auth.providerData[0]
-                    this.displayName = data.auth.providerData[0].displayName
-                } else if (data.github) {
-                    this.authInfo = data.github
+                if (_currentUser.providerData[0].providerId === "twitter.com") {
+                    this.authInfo = _currentUser.providerData[0]
+                    this.displayName = _currentUser.providerData[0].displayName
+                } else if (_currentUser.github) {
+                    this.authInfo = _currentUser.github
                     //this.authInfo.displayName = data.github.displayName
                 } else {
-                    this.authInfo = data.auth || {}
-                    this.displayName = data.auth.providerData[0].email
+                    this.authInfo = _currentUser.auth || {}
+                    this.displayName = _currentUser.providerData[0].email
                 }
                 this.textItems = this.af.database.list('/textItems')
 
@@ -77,9 +81,9 @@ export class HomePage implements OnInit {
     addOrUpdateUser(_authData) {
         const itemObservable = this.af.database.object('/users/' + _authData.uid);
         itemObservable.set({
-            "provider": _authData.auth.providerData[0].providerId,
-            "avatar": _authData.auth.photoURL || "MISSING",
-            "displayName": _authData.auth.providerData[0].displayName || _authData.auth.email,
+            "provider": _authData.providerData[0].providerId,
+            "avatar": _authData.photoURL || "MISSING",
+            "displayName": _authData.providerData[0].displayName || _authData.email,
         })
     }
     getMoreData() {
